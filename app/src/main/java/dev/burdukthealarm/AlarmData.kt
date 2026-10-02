@@ -33,6 +33,8 @@ object AlarmData {
  fun choose(c:Context):AudioSource?{
   val all=tracks(c)+stations(c); if(all.isEmpty())return null
   val wanted=selectedTags(c)
-  return all.filter{it.tags.contains("any")||wanted.isEmpty()||it.tags.any(wanted::contains)}.ifEmpty{tracks(c).ifEmpty{all}}.randomOrNull()
+  val tagged = all.filter { it.tags.none { tag -> tag == "any" } && (wanted.isEmpty() || it.tags.any(wanted::contains)) }
+  val fallback = all.filter { "any" in it.tags }
+  return (tagged.ifEmpty { fallback.ifEmpty { all } }).randomOrNull()
  }
 }
