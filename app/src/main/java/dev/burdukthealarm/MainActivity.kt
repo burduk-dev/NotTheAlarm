@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
 private fun AlarmHome() {
  val context= LocalContext.current
  var refresh by remember { mutableIntStateOf(0) }
+ val currentRevision = refresh
  var enabled by remember { mutableStateOf(AlarmData.enabled(context)) }
  var hour by remember { mutableIntStateOf(AlarmData.hour(context)) }
  var minute by remember { mutableIntStateOf(AlarmData.minute(context)) }
@@ -92,7 +93,7 @@ private fun AlarmHome() {
       }
      }
     }
-    item {Row(verticalAlignment=Alignment.CenterVertically){Icon(Icons.Default.MusicNote,null);Spacer(Modifier.width(8.dp));Text("Моя музыка",style=MaterialTheme.typography.titleLarge,fontWeight=FontWeight.SemiBold);Spacer(Modifier.weight(1f));IconButton(onClick={picker.launch(arrayOf("audio/*"))}){Icon(Icons.Default.Add,"Добавить музыку")}}}
+    item {Row(verticalAlignment=Alignment.CenterVertically){Icon(Icons.Default.MusicNote,null);Spacer(Modifier.width(8.dp));Text("Моя музыка (" + currentRevision + ")",style=MaterialTheme.typography.titleLarge,fontWeight=FontWeight.SemiBold);Spacer(Modifier.weight(1f));IconButton(onClick={picker.launch(arrayOf("audio/*"))}){Icon(Icons.Default.Add,"Добавить музыку")}}}
     if(AlarmData.tracks(context).isEmpty()) item {Text("Добавь аудиофайлы с устройства. Локальная музыка сможет играть без интернета.",color=MaterialTheme.colorScheme.onSurfaceVariant)}
     items(AlarmData.tracks(context),key={it.id}) { track ->
      ListItem(headlineContent={Text(track.title)},supportingContent={Text(track.tags.joinToString(", "))},leadingContent={Icon(Icons.Default.MusicNote,null)},trailingContent={
@@ -103,7 +104,7 @@ private fun AlarmHome() {
      })
      HorizontalDivider()
     }
-    item {Row(verticalAlignment=Alignment.CenterVertically){Icon(Icons.Default.Radio,null);Spacer(Modifier.width(8.dp));Text("Интернет-радио",style=MaterialTheme.typography.titleLarge,fontWeight=FontWeight.SemiBold);Spacer(Modifier.weight(1f));IconButton(onClick={showRadio=true}){Icon(Icons.Default.Add,"Добавить радио")}}}
+    item {Row(verticalAlignment=Alignment.CenterVertically){Icon(Icons.Default.Radio,null);Spacer(Modifier.width(8.dp));Text("Интернет-радио (" + currentRevision + ")",style=MaterialTheme.typography.titleLarge,fontWeight=FontWeight.SemiBold);Spacer(Modifier.weight(1f));IconButton(onClick={showRadio=true}){Icon(Icons.Default.Add,"Добавить радио")}}}
     if(AlarmData.stations(context).isEmpty()) item {Text("Добавь прямой URL аудиопотока, а не ссылку на сайт радиостанции.",color=MaterialTheme.colorScheme.onSurfaceVariant)}
     items(AlarmData.stations(context),key={it.id}) { station ->
      ListItem(headlineContent={Text(station.title)},supportingContent={Text(station.tags.joinToString(", ")+"\n"+station.uri)},leadingContent={Icon(Icons.Default.Radio,null)},trailingContent={
